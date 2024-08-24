@@ -1,0 +1,36 @@
+#headerContainer {
+    text-align: center;
+}
+#gameContainer {
+    height: 600px;
+    width: 1000px;
+    margin: auto;
+}
+.block {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+}
+.block-style-one {
+    background-color: #aad751;
+}
+.block-style-two {
+    background-color: #8fbd37;
+}
+.block:hover{
+    background-color: #c5e883;
+    cursor: pointer;
+}
+
+@font-face {
+    font-family: 'SpaceShards';
+    src: url('../../../../shared/assets/fonts/SpaceShards-RpExo.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1 {
+    font-family: 'SpaceShards', sans-serif;
+    letter-spacing: 2px;
+    font-size: 55px;
+}
