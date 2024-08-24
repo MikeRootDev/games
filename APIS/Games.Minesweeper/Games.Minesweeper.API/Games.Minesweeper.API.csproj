@@ -13,4 +13,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Games.Minesweeper.Domain\Games.Minesweeper.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
