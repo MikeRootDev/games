@@ -34,6 +34,7 @@ export class MinesweeperComponent implements AfterViewInit {
         this.renderer.setStyle(div, 'float', 'left'); // Ensures that divs align next to each other
         const className = (counter % 2 === 1) ? 'block-style-one' : 'block-style-two';
         this.renderer.addClass(div, className);
+        this.renderer.listen(div, 'click', () => this.onBlockClick(div));
         this.renderer.appendChild(parentElement, div);
         currentWidth += divWidth;
       }
@@ -41,5 +42,10 @@ export class MinesweeperComponent implements AfterViewInit {
       counter++;
       currentHeight += divHeight;
     }
+  }
+
+  onBlockClick(element: HTMLElement): void {
+    console.log(element);
+    alert(element.className);
   }
 }
