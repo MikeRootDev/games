@@ -8,7 +8,7 @@ namespace Games.Minesweeper.API.Profiles
   {
     public ResponseProfiles()
     {
-      CreateMap<Game, GetGameResponse>().ReverseMap();
+      CreateMap<Game, GameGetResponse>().ReverseMap();
     }
   }
 }

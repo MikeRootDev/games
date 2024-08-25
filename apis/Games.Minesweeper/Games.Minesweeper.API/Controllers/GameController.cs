@@ -36,16 +36,17 @@ namespace Games.Minesweeper.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(GetGameResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GameGetResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ValidationFilter(typeof(GameGetRequestValidationAttribute))]
-    public async Task<ActionResult<IEnumerable<GetGameResponse>>> GetNewGame([FromQuery]GameGetRequest request, CancellationToken cancellationToken)
+    [ValidationFilter(typeof(GameGetResponseValidationAttribute))]
+    public async Task<ActionResult<IEnumerable<GameGetResponse>>> GetNewGame([FromQuery]GameGetRequest request, CancellationToken cancellationToken)
     {
       try
       {
-        var command = new GetGameQuery(request.Width, request.Height, request.NumberOfMines);
+        var command = new GetGameQuery(request.Width!.Value, request.Height!.Value, request.NumberOfMines!.Value);
         var games = await _mediator.Send(command, cancellationToken);
-        return Ok(_mapper.Map<GetGameResponse>(games));
+        return Ok(_mapper.Map<GameGetResponse>(games));
       }
       catch (Exception ex)
       {

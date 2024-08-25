@@ -30,6 +30,12 @@ namespace Games.Minesweeper.API.Attributes
       {
         var problemDetails = new ProblemDetails();
         problemDetails.Extensions.Add("traceid", System.Diagnostics.Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
+        if (validationResult.Errors.Any()) {
+
+          problemDetails.Detail = string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage));
+        }
+        problemDetails.Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1";
+        problemDetails.Title = "One or more validation errors occurred.";
         context.Result = new BadRequestObjectResult(problemDetails);
         return;
       }

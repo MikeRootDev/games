@@ -1,6 +1,6 @@
 namespace Games.Minesweeper.API.Responses
 {
-  public class GetGameResponse
+  public class GameGetResponse
   {
     public Guid ExternalId { get; set; }
   }
