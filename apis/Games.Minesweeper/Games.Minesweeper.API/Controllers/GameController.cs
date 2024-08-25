@@ -1,9 +1,12 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Games.Minesweeper.Domain.Models;
 using MediatR;
-using Games.Minesweeper.Domain.Queries;
 using AutoMapper;
+using Games.Minesweeper.Domain.Models;
+using Games.Minesweeper.Domain.Queries;
 using Games.Minesweeper.API.Responses;
+using Games.Minesweeper.API.Requests;
+using Games.Minesweeper.API.Attributes;
 
 namespace Games.Minesweeper.API.Controllers
 {
@@ -33,11 +36,22 @@ namespace Games.Minesweeper.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetGamesResponse>>> GetNewGame(CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(GetGameResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ValidationFilter(typeof(GameGetRequestValidationAttribute))]
+    public async Task<ActionResult<IEnumerable<GetGameResponse>>> GetNewGame([FromQuery]GameGetRequest request, CancellationToken cancellationToken)
     {
-      var command = new GetGamesQuery();
-      var games = await _mediator.Send(command, cancellationToken);
-      return Ok(_mapper.Map<IEnumerable<GetGamesResponse>>(games));
+      try
+      {
+        var command = new GetGameQuery(request.Width, request.Height, request.NumberOfMines);
+        var games = await _mediator.Send(command, cancellationToken);
+        return Ok(_mapper.Map<GetGameResponse>(games));
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("{methodName} threw exception {ex}", nameof(GetNewGame), ex);
+        throw;
+      }
     }
 
     /// <summary>

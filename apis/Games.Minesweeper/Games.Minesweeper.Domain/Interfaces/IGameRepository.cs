@@ -4,6 +4,6 @@ namespace Games.Minesweeper.Domain.Interfaces
 {
   public interface IGameRepository
   {
-    Task<IEnumerable<Game>> GetGames();
+    Task<Game> StartGame();
   }
 }

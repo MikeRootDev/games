@@ -4,9 +4,9 @@ using Games.Minesweeper.Infrastructure;
 using System.Reflection;
 using Games.Minesweeper.Infrastructure.Profiles;
 using Games.Minesweeper.API.Profiles;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Games.Minesweeper.Domain.Handlers;
+using FluentValidation;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 
 namespace Games.Minesweeper.API;
 
@@ -28,7 +28,9 @@ public class Program
         builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)),
           Assembly.GetAssembly(typeof(MinesweeperProfile)),
           Assembly.GetAssembly(typeof(ResponseProfiles)));
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetGamesHandler).Assembly));
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetGameHandler).Assembly));
+        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+        builder.Services.AddFluentValidationRulesToSwagger();
 
         var app = builder.Build();
 

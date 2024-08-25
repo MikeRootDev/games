@@ -5,18 +5,18 @@ using Games.Minesweeper.Domain.Interfaces;
 
 namespace Games.Minesweeper.Domain.Handlers
 {
-  public class GetGamesHandler : IRequestHandler<GetGamesQuery, IEnumerable<Game>>
+  public class GetGameHandler : IRequestHandler<GetGameQuery, Game>
   {
     private IGameRepository _gameRepository;
 
-    public GetGamesHandler(IGameRepository gameRepository)
+    public GetGameHandler(IGameRepository gameRepository)
     {
       _gameRepository = gameRepository;
     }
 
-    public async Task<IEnumerable<Game>> Handle(GetGamesQuery query, CancellationToken cancellationToken)
+    public async Task<Game> Handle(GetGameQuery query, CancellationToken cancellationToken)
     {
-      return await _gameRepository.GetGames();
+      return await _gameRepository.StartGame();
     }
   }
 }

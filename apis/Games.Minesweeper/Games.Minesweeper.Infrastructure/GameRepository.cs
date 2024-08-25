@@ -23,16 +23,15 @@ namespace Games.Minesweeper.Infrastructure
       _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Game>> GetGames()
+    public async Task<Game> StartGame()
     {
       try
       {
         using (var dbConn = _connectionFactory.GetMinesweeperConnection())
         {
           string sql = "SELECT * FROM dbo.Games";
-          var dtos = await dbConn.QueryAsync<GameDto>(sql);
-          var games = new List<Game>();
-          return _mapper.Map<IEnumerable<Game>>(dtos);
+          var dto = await dbConn.QueryFirstOrDefaultAsync<GameDto>(sql);
+          return _mapper.Map<Game>(dto);
         }
       }
       catch (Exception ex)
