@@ -1,4 +1,4 @@
-namespace Games.Minesweeper.Domain.Requests
+namespace Games.Minesweeper.API.Requests
 {
   public class GamePutRequest
   {

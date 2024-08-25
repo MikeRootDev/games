@@ -1,3 +1,12 @@
+using Games.Minesweeper.Domain.Configuration;
+using Games.Minesweeper.Domain.Interfaces;
+using Games.Minesweeper.Infrastructure;
+using System.Reflection;
+using Games.Minesweeper.Infrastructure.Profiles;
+using Games.Minesweeper.API.Profiles;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Games.Minesweeper.Domain.Handlers;
 
 namespace Games.Minesweeper.API;
 
@@ -13,6 +22,13 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddScoped<IGameRepository, GameRepository>();
+        builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
+        builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+        builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)),
+          Assembly.GetAssembly(typeof(MinesweeperProfile)),
+          Assembly.GetAssembly(typeof(ResponseProfiles)));
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetGamesHandler).Assembly));
 
         var app = builder.Build();
 
@@ -24,12 +40,8 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
-
         app.MapControllers();
-
         app.Run();
     }
 }
